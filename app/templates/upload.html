@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: black;
+  background-color: #c4ffb9;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  align-content: center;
+  object-position: center;
+  transition: transform ease-in-out 0.5s;
+}
+
+.modal-content button {
+  margin-top: 10px;
+}
+
+#result {
+  display: none
+}
+
+#staticImage {
+  display: none;
+  background-color: white; 
+  width: 350px;
+}
+</style>
+
+<html>
+  <body style="font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: black;
+  background-color: #c4ffb9;">
+  <head>
+    <title>File Upload</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  </head>
+
+    <h1 style = " text-align: center;
+    font-weight: bold;
+    font-size: 24px;">Upload the pictures you would like to anonymize below!</h1>
+    <form id="myDropzone" method="POST" accept=".jpg, .png, .gif" action="{{ url_for('upload_files') }}" class="dropzone" enctype="multipart/form-data">
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.js"></script>
+    <hr>
+    <h1 id="result" style = "color: rgb(3, 68, 3); font-size: 20px;"> Here is your anonymized picture! </h1>
+    <img id="staticImage" src="{{ url_for('static', filename='blurred.jpg') }}">
+
+<!-- Modal -->
+<div class="modal fade" id="anonymizeModal" tabindex="-1" role="dialog" aria-labelledby="anonymizeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center w-100" id="anonymizeModalLabel">Choose Anonymization Style</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding-top: 0;">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="anonymize('blurring')">Blurring</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="anonymize('smiley face')">Smiley Face</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="anonymize('black box')">Black Box</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="anonymize('pixelate')">Pixelate</button>
+        <p style="display: inline;font-size: 14px; color: brown;">(More styles will be available soon!)</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    <!-- Bootstrap and Jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Handle Upload Complete -->
+    <script>
+      Dropzone.options.myDropzone = {
+        init: function() {
+          this.on("complete", function(file) {
+            $('#anonymizeModal').modal('show');
+          });
+        }
+      };
+
+    function anonymize(style) {
+        console.log('User selected ' + style);
+        // Making an AJAX POST request to the server to process the image
+        $.ajax({
+            type: "POST",
+            url: "{{ url_for('pictures') }}",
+            data: JSON.stringify({ style: style }),
+            contentType: "application/json",
+            success: function(response) {
+                // Updating the src attribute of the image element to display the anonymized image
+                $('#staticImage').attr('src', response.anonymized_image_url);
+                $('#result').show();
+                $('#staticImage').show();
+            }
+        });
+    }
+
+    </script>
+
+  </body>
+</html>
+
+{% endblock %}
+
+
