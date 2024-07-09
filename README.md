@@ -1,7 +1,7 @@
 # FaceWard
 Official FaceWard implementation in python.
 
-If you use this code in your research, please cite our paper [FaceWard: Face Anonymization in Group Photos](https://dl.acm.org/doi/10.1145/3565066.3608249).
+If you use this code, please cite our paper [FaceWard: Face Anonymization in Group Photos](https://dl.acm.org/doi/10.1145/3565066.3608249).
 
 ```bibtex
 @inproceedings{10.1145/3565066.3608249,
