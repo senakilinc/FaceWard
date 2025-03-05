@@ -26,7 +26,7 @@ import json
 import pathlib
 import requests
 
-with open("C:\\Users\\Sena\\BSP06-WEB\\venv\\app\\config.json", "r") as f:
+with open("config.json", "r") as f:
     config = json.load(f)
 
 @app.route('/')
@@ -140,12 +140,12 @@ def upload_files():
         if file_ext not in app.config['UPLOAD_EXTENSIONS'] or \
                 file_ext != validate_image(uploaded_file.stream):
             abort(400)
-        uploaded_file.save(os.path.join('C:\\Users\\Sena\\BSP06-WEB\\venv\\app\\static\\uploads\\{}'.format(current_user.username), filename))
+        uploaded_file.save(os.path.join('app\static\uploads\{}'.format(current_user.username), filename))
     return redirect(url_for('pictures'))
 
 @app.route('/uploads/<filename>')
 def upload(filename):
-       return send_from_directory(os.path.join('C:\\Users\\Sena\\BSP06-WEB\\venv\\app\\static\\uploads\\{}'.format(current_user.username)), filename)
+       return send_from_directory(os.path.join('app\static\uploads\{}'.format(current_user.username)), filename)
 
 @app.route('/record_video')
 def record_video():
