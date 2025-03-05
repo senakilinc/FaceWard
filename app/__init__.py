@@ -18,8 +18,8 @@ moment = Moment(app)
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
 app.config['ALLOWED_EXTENSIONS'] = {'mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'}
-app.config['UPLOAD_PATH'] = 'C:\\Users\\Sena\\BSP06-WEB\\venv\\app\\static\\uploads'
-app.config['STATISTICS_FOLDER'] = 'C:\\Users\\Sena\\BSP06-WEB\\venv\\app\\static\\videos'
+app.config['UPLOAD_PATH'] = 'app/static/uploads'
+app.config['STATISTICS_FOLDER'] = 'app/static/videos'
 
 
 from app import routes, models, screenshot
